@@ -6,7 +6,7 @@ stages:
   - build
   - test
   - name: deploy
-    if: branch =~ /^feature\/.*$/
+    if: branch = main
 
 install:
 - npm i
