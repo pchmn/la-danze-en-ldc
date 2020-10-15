@@ -9,20 +9,44 @@ stages:
     if: branch =~ /^feature\/.*$/
 
 install:
-- npm i
+  - npm i
+  # Upload dependencies
+  workspaces:
+    create:
+      name: node_modules
+      paths:
+        - node_modules
 
 jobs:
   include:
     # BUILD
     - stage: build
+      workspaces:
+        # Donwload dependencies
+        use:
+          - node_modules
+        # Upload dependencies
+        create:
+          name: dist
+          paths:
+            - dist
       script: npm run build
 
     # TEST
     - stage: test
+      workspaces:
+        # Donwload dependencies
+        use:
+          - node_modules
       script: npm run test
 
     # DEPLOY
     - stage: deploy
+      workspaces:
+        # Donwload dependencies
+        use:
+          - node_modules
+          - dist
       script: 
         - npm i firebase-tools
         - firebase deploy --only functions --token=${FIREBASE_TOKEN}     
