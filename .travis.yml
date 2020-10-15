@@ -9,37 +9,36 @@ stages:
   - name: deploy
     if: branch =~ /^feature\/.*$/
 
+# Skip npm install before each stage
+install: true
+
 jobs:
   include:
-    # INSTALL
+    # INSTALL DEPENDENCIES
     - stage: install
       script: npm i
       workspaces:
         # Upload node_modules
         create:
           name: node_modules
-          paths:
-            - node_modules
+          paths: node_modules
 
     # BUILD
     - stage: build
       workspaces:
         # Donwload node_modules
-        use:
-          - node_modules
+        use: node_modules
         # Upload dist folder
         create:
           name: dist
-          paths:
-            - dist
+          paths: dist
       script: npm run build
 
     # TEST
     - stage: test
       workspaces:
         # Donwload node_modules
-        use:
-          - node_modules
+        use: node_modules
       script: npm run test
 
     # DEPLOY
