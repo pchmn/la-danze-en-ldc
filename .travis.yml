@@ -19,7 +19,7 @@ jobs:
     script: npm run test
     
   - stage: deploy
-    if: branch = main
+    # if: branch = main
     deploy:
       provider: firebase
       token:
