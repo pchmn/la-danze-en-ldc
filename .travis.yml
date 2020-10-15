@@ -2,15 +2,29 @@ language: node_js
 node_js:
 - 10
 
+stages:
+  - build
+  - test
+  - name: deploy
+
 install:
 - npm i
 
-script:
-  - npm run build
-  - npm run test
+jobs:
+  include:
+    # BUILD
+    - stage: build
+      script: npm run build
 
-deploy:
-  skip_cleanup: true
-  provider: firebase
-  token:
-    secure: CZuU76jq4JcnQWnlur95n9z/f0tOl4UR/KX0MLAkVM1Y8SmICs+pAHipKVY7pMBN4ig0ckN1k0vQGVDrDQHMomJuXeuzNFTGW779mENrC2Kt6O44dXw1orx9lHF+a9oyM9JT6eNqna22LUs9xVdzm80NrWzUZiEZveMO8lB34bwGGmdgKMa3H9wrWcC/cjo0Q6PGo8Rt7ehyhzPj9+RxZFLYEZmogHbaXzcVp8LdcH+jXNpwj/l5zGO8BG5ZN8l9cb6sfhAzt+FSFtRoFGLZRXLyO9JzpPCAObXafaXCYuNe7QubL/Yr5Ov/05nX7FWcari26RWlz+tKVrQz6EM5DEEJ3DE170Opkv7b85EIszHoqH7ZuI4GrHWOvh1HUHR0wdz/Vn1N2lVou0hQyH02YXbyggx0GMGp1Kg/t+ilkamgiKbjkUVO/DN9pdywN9IVgkpaneEDXsuu0BaVfj7CVsmSOm0ccBvWBufnRTXezv+Xt1SniUNBq8VEz18mVGFD+vnwRi+kcuKL+1mw/EqVWoawWiLBjbrOEuEbHJlL7Tj6cB3U35ADOCTt+4rYust76EyGdinSD8zvqVCfR3AziQ4MOxefKjhWdXHYITJ4I82ISIJuJIIHfOL39r5s6+EW5gdv1QNqHwJCPwF1WJsDBJbgSWoz4mgMEdavTpPOYfE=
+    # TEST
+    - stage: test
+      script: npm run test
+
+    # DEPLOY
+    - stage: deploy
+      script: skip
+      deploy:
+        provider: firebase
+        token:
+          secure: CZuU76jq4JcnQWnlur95n9z/f0tOl4UR/KX0MLAkVM1Y8SmICs+pAHipKVY7pMBN4ig0ckN1k0vQGVDrDQHMomJuXeuzNFTGW779mENrC2Kt6O44dXw1orx9lHF+a9oyM9JT6eNqna22LUs9xVdzm80NrWzUZiEZveMO8lB34bwGGmdgKMa3H9wrWcC/cjo0Q6PGo8Rt7ehyhzPj9+RxZFLYEZmogHbaXzcVp8LdcH+jXNpwj/l5zGO8BG5ZN8l9cb6sfhAzt+FSFtRoFGLZRXLyO9JzpPCAObXafaXCYuNe7QubL/Yr5Ov/05nX7FWcari26RWlz+tKVrQz6EM5DEEJ3DE170Opkv7b85EIszHoqH7ZuI4GrHWOvh1HUHR0wdz/Vn1N2lVou0hQyH02YXbyggx0GMGp1Kg/t+ilkamgiKbjkUVO/DN9pdywN9IVgkpaneEDXsuu0BaVfj7CVsmSOm0ccBvWBufnRTXezv+Xt1SniUNBq8VEz18mVGFD+vnwRi+kcuKL+1mw/EqVWoawWiLBjbrOEuEbHJlL7Tj6cB3U35ADOCTt+4rYust76EyGdinSD8zvqVCfR3AziQ4MOxefKjhWdXHYITJ4I82ISIJuJIIHfOL39r5s6+EW5gdv1QNqHwJCPwF1WJsDBJbgSWoz4mgMEdavTpPOYfE=
+      
