@@ -3,6 +3,7 @@ node_js:
   - 10
 
 stages:
+  - install
   - build
   - test
   - name: deploy
@@ -10,15 +11,19 @@ stages:
 
 install:
   - npm i
-  # Upload node_modules
-  workspaces:
-    create:
-      name: node_modules
-      paths:
-        - node_modules
 
 jobs:
   include:
+    # INSTALL
+    - stage: install
+      script: npm i
+      workspaces:
+        # Upload node_modules
+        create:
+          name: node_modules
+          paths:
+            - node_modules
+
     # BUILD
     - stage: build
       workspaces:
