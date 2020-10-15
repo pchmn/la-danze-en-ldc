@@ -9,9 +9,6 @@ stages:
   - name: deploy
     if: branch =~ /^feature\/.*$/
 
-install:
-  - npm i
-
 jobs:
   include:
     # INSTALL
