@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- 10
+  - 10
 
 stages:
   - build
@@ -10,7 +10,7 @@ stages:
 
 install:
   - npm i
-  # Upload dependencies
+  # Upload node_modules
   workspaces:
     create:
       name: node_modules
@@ -22,10 +22,10 @@ jobs:
     # BUILD
     - stage: build
       workspaces:
-        # Donwload dependencies
+        # Donwload node_modules
         use:
           - node_modules
-        # Upload dependencies
+        # Upload dist folder
         create:
           name: dist
           paths:
@@ -35,7 +35,7 @@ jobs:
     # TEST
     - stage: test
       workspaces:
-        # Donwload dependencies
+        # Donwload node_modules
         use:
           - node_modules
       script: npm run test
