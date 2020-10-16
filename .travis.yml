@@ -3,7 +3,6 @@ node_js:
   - 10
 
 stages:
-  - install
   - build
   - test
   - name: deploy
@@ -14,40 +13,31 @@ install: true
 
 jobs:
   include:
-    # INSTALL DEPENDENCIES
-    - stage: install
-      script: npm i
-      workspaces:
-        # Upload node_modules
-        create:
-          name: node_modules
-          paths: node_modules
-
     # BUILD
     - stage: build
+      script:
+        - npm i 
+        - npm run build
       workspaces:
-        # Donwload node_modules
-        use: node_modules
-        # Upload dist folder
+        # Upload node_modules and dist folder
         create:
-          name: dist
-          paths: dist
-      script: npm run build
+          name: dependencies
+          paths: 
+            - node_modules
+            - dist
 
     # TEST
     - stage: test
       workspaces:
-        # Donwload node_modules
-        use: node_modules
+        # Donwload dependencies
+        use: dependencies
       script: npm run test
 
     # DEPLOY
     - stage: deploy
       workspaces:
         # Donwload dependencies
-        use:
-          - node_modules
-          - dist
+        use: dependencies
       script: 
         - npm i firebase-tools
         - firebase deploy --only functions --token=${FIREBASE_TOKEN}     
